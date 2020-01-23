@@ -215,6 +215,10 @@ function* runQuerySaga(action) {
       const errorMessage = extractMessage(error)
       if (errorMessage === 'Failed to fetch') {
         yield put(setEndpointUnreachable(session.endpoint))
+        const answer = confirm('Session timed out, would you like to refresh?')
+        if (answer) {
+          location.reload()
+        }
       }
       if (operationIsSubscription) {
         if (firstResponse) {
