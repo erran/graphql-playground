@@ -6,6 +6,7 @@ import { makeOperation } from './util/makeOperation'
 import { parseHeaders } from './util/parseHeaders'
 import { LinkCreatorProps } from '../../state/sessions/fetchingSagas'
 import * as LRU from 'lru-cache'
+import { log } from '../../utils/performance'
 
 export interface TracingSchemaTuple {
   schema: GraphQLSchema
@@ -158,13 +159,9 @@ export class SchemaFetcher {
         },
         error: err => {
           reject(err)
+          log(err)
           this.fetching = this.fetching.remove(this.hash(session))
-          const answer = confirm(
-            'Session timed out, would you like to refresh?',
-          )
-          if (answer) {
-            location.reload()
-          }
+          location.reload()
         },
       })
     })

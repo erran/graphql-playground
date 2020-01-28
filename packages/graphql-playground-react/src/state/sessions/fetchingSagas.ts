@@ -213,12 +213,9 @@ function* runQuerySaga(action) {
         resultID: cuid(),
       })
       const errorMessage = extractMessage(error)
-      if (errorMessage === 'Failed to fetch') {
+      if (errorMessage === 'Unauthorized') {
         yield put(setEndpointUnreachable(session.endpoint))
-        const answer = confirm('Session timed out, would you like to refresh?')
-        if (answer) {
-          location.reload()
-        }
+        location.reload()
       }
       if (operationIsSubscription) {
         if (firstResponse) {
