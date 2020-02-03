@@ -213,8 +213,9 @@ function* runQuerySaga(action) {
         resultID: cuid(),
       })
       const errorMessage = extractMessage(error)
-      if (errorMessage === 'Failed to fetch') {
+      if (errorMessage === 'Unauthorized') {
         yield put(setEndpointUnreachable(session.endpoint))
+        location.reload()
       }
       if (operationIsSubscription) {
         if (firstResponse) {
